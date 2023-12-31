@@ -210,26 +210,6 @@ message(WARNING "Pinning on Power8 currently is not default" )
 ADD_DEFINITIONS(-DNO_DEFAULT_MAPPING)
 endif (CMAKE_SYSTEM_PROCESSOR MATCHES "ppc")
 
-# Examples currently not tested on arm
-if (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-   find_library(ARM_RT_LIBRARY rt HINT /usr/lib DOC "arm rt library")
-   if (ARM_RT_LIBRARY)
-     link_libraries(${ARM_RT_LIBRARY})
-   else (ARM_RT_LIBRARY) 
-     message(FATAL_ERROR "Cannot find RT library that is required on arm processor ${ERR_MSG}")
-   endif (ARM_RT_LIBRARY) 
-    option( BUILD_EXAMPLES      "Build examples"    ON )
-#   MESSAGE(WARNING "NOT Configuring >>examples<< directory (arm processor detected)")
-else (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-   if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-     option( BUILD_EXAMPLES      "Build examples"        ON )
-     MESSAGE(STATUS "Configuring >>examples<< directory")
-   else (CMAKE_SYSTEM_NAME MATCHES "Windows")
-     option( BUILD_EXAMPLES      "Build examples"        ON )
-     MESSAGE(STATUS "Configuring >>examples<< directory")
-   endif (CMAKE_SYSTEM_NAME MATCHES "Windows")
-endif (CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-
 #       NAME                "Description"           DEFAULT
 option( BUILD_TESTS         "Build tests"           ON ) 
 MESSAGE(STATUS "Configuring >>tests<< directory")
@@ -238,7 +218,7 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
     IMMEDIATE @ONLY )
 
-add_custom_target( uninstall
+add_custom_target( fastflow_uninstall
     "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake" )
 
 install( FILES ${FFHEADERS} DESTINATION include/ff/ )
